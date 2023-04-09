@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    
+    <div id="app">
+        <div class="row mb-5">
+            <div class="col-3">
+                <button type="button" class="btn btn-link mr-5" @click="page = 'news-rs'">News RS</button>
+            </div>
+            <div class="col-3">
+                <button type="button" class="btn btn-link mr-5" @click="page = 'read-by-user'">Read by User</button>
+            </div>
+            <div class="col-3">
+                <button type="button" class="btn btn-link mr-5" @click="page = 'user-rs'">User RS</button>
+            </div>
+            <div class="col-3">
+                <button type="button" class="btn btn-link" @click="page = 'create-user'">Create User</button>
+            </div>
+        </div>
+
+        <div v-if="page == 'news-rs'">
+            <h1>News Recommender System</h1>
+
+            <form @submit.prevent="getNews(userID)">
+                <div class="form-group row">
+                    <div class="col-9">
+                        <label for="">User ID</label>
+                        <input type="text" class="form-control" v-model="userID">
+                    </div>
+                    <div class="col-auto mt-auto">
+                        <button class="btn btn-success" type="submit">Recommend</button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="mt-5">
+                <div class="card mb-3" v-for="news, index in newsList" :key="index">
+                    <div class="card-body row justify-content-between px-4">
+                        
+                        { news.id } - { news.title }
+
+                        <br><br>
+
+                        { news.abstract }
+
+                        <br><br>
+
+                        Path: { userID } → { news.relatedNewsID } → { news.entity } → { news.id }
+                        
+                    </div>
+                    <div class="card-body row justify-content-between px-4">
+                        <!-- <button type="submit" class="btn-close" @click=""></button> -->
+                        <!-- readNews(newsID) -->
+                        <button type="button" class="btn btn-primary" @click="removeFromNewsList(news.id)">Mark as Read</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div v-if="page == 'read-by-user'">
+            <h1>News Read by User</h1>
+
+            <form @submit.prevent="getReadByUser(readByUserID)">
+                <div class="form-group row">
+                    <div class="col-9">
+                        <label for="">User ID</label>
+                        <input type="text" class="form-control" v-model="readByUserID">
+                    </div>
+                    <div class="col-auto mt-auto">
+                        <button class="btn btn-success" type="submit">Search</button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="mt-5">
+                <div class="card mb-3" v-for="news, index in readByUserList" :key="index">
+                    <div class="card-body row justify-content-between px-4">
+                        
+                        { news.id } - { news.title }
+
+                        <br><br>
+
+                        Entities: { news.entities }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div v-if="page == 'user-rs'">
+            <h1>Users Recommender System</h1>
+
+            <form @submit.prevent="getUsers(newsID)">
+                <div class="form-group row">
+                    <div class="col-9">
+                        <label for="">News ID</label>
+                        <input type="text" class="form-control" v-model="newsID">
+                    </div>
+                    <div class="col-auto mt-auto">
+                        <button class="btn btn-success" type="submit">Recommend</button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="mt-5">
+                <div class="card mb-3" v-for="user, index in usersList" :key="index">
+                    <div class="card-body row justify-content-between px-4">
+                        
+                        User ID: { user.id }
+
+                        <br><br>
+
+                        Related News: { user.relatedNewsID } - { user.relatedNewsTitle }
+
+                        <br><br>
+
+                        Path: { newsID } → { user.entity } → { user.relatedNewsID } → { user.id }
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div v-if="page == 'create-user'">
+            <h1>Create User</h1>
+
+            <form @submit.prevent="createUser(newUserID)">
+                <div class="form-group row">
+                    <div class="col-6">
+                        <label for="">User ID</label>
+                        <input type="text" class="form-control" v-model="newUserID">
+                    </div>
+                    <div class="col-auto mt-auto">
+                        <button class="btn btn-success" type="submit">Create</button>
+                    </div>
+                    <div class="col-auto mt-auto">
+                        <button type="button" class="btn btn-primary" @click="getRandomNews()">Get Random News</button>
+                    </div>
+                </div>
+            </form>
+            
+            <h3 class="mt-5">Select user read news</h3>
+
+            <div class="mt-5">
+                <div class="card mb-3" v-for="news, index in randomNewsList" :key="index">
+                    <div class="card-body row justify-content-between px-4">
+                        
+                        { news.id } - { news.title }
+
+                        <br><br>
+
+                        Entities: { news.entities }
+
+                    </div>
+                    <div class="card-body row justify-content-between px-4">
+                        <!-- <button type="submit" class="btn-close" @click=""></button> -->
+                        <!-- readNews(newsID) -->
+                        <button type="button" class="btn btn-primary" @click="removeFromRandomNewsList(news.id)">Mark as Read</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <svg id="mySVG" ref="mySVG" width="100%" height="100%"></svg>
+{% endblock %}
