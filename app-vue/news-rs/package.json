@@ -10,6 +10,8 @@
   "dependencies": {
     "@livereader/graphly-d3": "^1.4.1",
     "core-js": "^3.8.3",
+    "d3": "^7.8.5",
+    "d3-hierarchy": "^3.1.2",
     "vue": "^2.6.14",
     "vue-neo4j": "^0.4.11",
     "vue-router": "^3.5.1"
