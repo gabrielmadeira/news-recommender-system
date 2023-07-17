@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import HierarchicalView from "../views/HierarchicalView.vue";
+import TestGraphlyView from "../views/TestGraphlyView.vue";
 
 Vue.use(VueRouter);
 
@@ -24,6 +25,11 @@ const routes = [
     path: "/hierarchical",
     name: "hierarchical",
     component: HierarchicalView,
+  },
+  {
+    path: "/testgraphly",
+    name: "testgraphly",
+    component: TestGraphlyView,
   },
 ];
 
